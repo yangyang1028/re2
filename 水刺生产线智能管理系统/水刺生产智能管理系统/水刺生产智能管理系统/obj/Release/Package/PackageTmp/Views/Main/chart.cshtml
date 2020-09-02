@@ -1,0 +1,150 @@
+﻿@using 水刺生产智能管理系统.Models
+@model Tuple<List<Syschart>>
+@{
+    ViewBag.Title = "智能管理系统";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div style="width:500px;height:500px;">
+        chart
+        <script src="~/Scripts/echarts.min.js"></script>
+       <div id="char1" style="width:800px;height:800px"></div>
+            <script>
+                $(function () {
+                    myChart1.setOption(option1);
+                })
+                var myChart1 = echarts.init(document.getElementById('char1'));
+
+                var option1 = {
+                    tooltip: { //鼠标滑过出现的提示框
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'line',
+                            lineStyle: {
+                                color: '#6d819c',
+                            }
+                        }
+                    },
+                    legend: {
+                        data: ['泵流量'],
+                        right: '1 %',
+                        textStyle: {
+                            color: '#263959'
+                        },
+                    },
+                    color: ['#263959'],
+                    textStyle: {
+                        color: '#263959'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        name: '小时',
+                        data: ['0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22'],
+                        axisLine: {
+                            lineStyle: {
+                                color: '#263959',
+                            }
+                        },
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '泵流量/m³',
+
+                    },
+                    series: [{
+                        name: '泵流量',
+                        type: 'line',
+                        data: [45, 75, 2, 56, 82, 45, 7, 0, 85, 40, 45, 0]
+                    }]
+                };
+            </script>
+
+        <div id="main" style="width:800px;height:800px;background:red"></div>
+        <script type="text/javascript">
+
+            var myChart = echarts.init(document.getElementById('main'));
+
+            $.get('data.json').done(function (data) {
+                myChart.setOption({
+                    title: {
+                        text: '异步数据加载示例'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['销量']
+                    },
+                    xAxis: {
+                        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data:[ data.data]
+                    }]
+                });
+            });
+
+
+        </script>
+    </div>*@
+
+
+
+
+<div>
+    <div id="main" style="width:800px;height:800px; "></div>
+    <script src="~/Scripts/echarts.min.js"></script>
+    <script>
+        var myChart = echarts.init(document.getElementById('main'));
+        // 显示标题，图例和空的坐标轴
+        myChart.setOption({
+            title: {
+                text: '异步数据加载示例'
+            },
+            tooltip: {},
+            legend: {
+                data: ['销量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: []
+            }]
+        });
+
+        // 异步加载数据
+        $.get('../json/data.json').done(function (data) {
+            // 填入数据
+            myChart.setOption({
+                xAxis: {
+                    data: data.categories
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '销量',
+                    data: data.data
+                }]
+            });
+        });
+    </script>
+</div>
+
+<div>
+    <table class="chart1">
+        @foreach(var item in Model.Item1)
+        {
+            <tr>
+                <td>@item.id</td>
+                <td>@item.speed</td>
+                <td>@item.time</td>
+            </tr>
+        }
+        
+    </table>
+</div>
+
